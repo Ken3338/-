@@ -1,0 +1,65 @@
+#include <stdio.h>
+int Queenes[8]={0},Counts=0;//Queens[x]=y 第x行的皇后在y列 
+int Check(int line,int list){
+    for (int index=0; index<line; index++) {//从0行到当前上一行 
+        int data=Queenes[index];
+        if (list==data) {//上方重复 
+            return 0;
+        }
+        
+        if ((index+data)==(line+list)) {//当前位置右上方向 
+            return 0;
+        }
+        if ((index-data)==(line-list)) {//当前位置左上 
+            return 0;
+        }
+    }
+    
+    return 1;
+}
+
+void print()
+{
+    for (int line = 0; line < 8; line++)
+    {
+        int list;
+        for (list = 0; list < Queenes[line]; list++)
+            printf("0");
+        printf("#");
+        for (list = Queenes[line] + 1; list < 8; list++){
+            printf("0");
+        }
+        printf("\n");
+    }
+    printf("================%d\n",Counts);
+}
+void eight_queen(int line){
+    
+    for (int list=0; list<8; list++)
+     {//line行list列 
+        if (Check(line, list)) {
+         
+         
+            Queenes[line]=list;
+            if (line==7) {
+                //八个都确定 
+                Counts++;
+                print();
+                
+                Queenes[line]=0;//下一次开始 
+                return;
+            }
+            
+            eight_queen(line+1);
+            //不管成功失败，该位置都要重新归0，以便重复使用。
+            Queenes[line]=0;
+            
+            
+        }
+    }
+}
+int main() {
+    eight_queen(0);//0行开始 
+    printf("%d种",Counts);
+    return 0;
+}
